@@ -7,6 +7,7 @@ import datetime
 import os
 from emotion import start_emotion_to_emoji_app
 from time import sleep
+from doctor.main import main_user
 from main import main as vision_main  # Import the vision main function
 
 
@@ -64,6 +65,20 @@ def generate(user_prompt, api_key, system_prompt, prints=False) -> str:
 
     return response_message.content
 
+def handle_doctor_bot():
+    # Launch the doctor AI bot
+    Speak("मैं आपके लिए डॉक्टर एआई शुरू कर रहा हूं")
+    main_user()
+    
+    # Continuously listen for 'thank you' or 'exit' to return to the main bot
+    while True:
+        print("Listening for 'thank you' or 'exit' to return to the main bot...")
+        spoken_text = listen_wake_word_hindi(["धन्यवाद", "थैंक यू", "एक्सिट"])
+        if spoken_text:
+            if "धन्यवाद" in spoken_text or "थैंक यू" in spoken_text or "एक्सिट" in spoken_text:
+                Speak("ठीक है, मुख्य वॉइसबोट पर वापस आ रहे हैं")
+                break  # Exit the doctor AI bot and return to the main bot
+
 def handle_vision_request(command_hindi):
     # Extract the query after "तुम क्या देख सकते हो" or "आप क्या देख सकते हो"
     vision_query = command_hindi.replace("देख सकते हो", "").replace("आप क्या देख सकते हो", "").replace("देख कर", "").replace("दो से पुछो", "").strip()
@@ -77,7 +92,7 @@ def handle_vision_request(command_hindi):
 if __name__ == "__main__":
     wake_words = ["रुद्र", "रुद्रा", "रूद्र", "रुद्र", "रूद्रा", "रूद्र", "रूद्र"]
 
-    api_key = "groq api key"
+    api_key = "api"
 
     while True:
         spoken_text = listen_wake_word_hindi(wake_words)
@@ -89,6 +104,9 @@ if __name__ == "__main__":
                     if "समय" in command_hindi or "तारीख" in command_hindi:
                         response = tell_date_time()
                         Speak(response)
+                    
+                    elif "बीमार" in command_hindi:
+                        handle_doctor_bot()
 
                     elif "पता" in command_hindi:
                         start_emotion_to_emoji_app()
@@ -99,6 +117,6 @@ if __name__ == "__main__":
                         Speak(vision_response)
 
                     else:
-                        response = generate(user_prompt=command_hindi, api_key=api_key, system_prompt="sys prompt", prints=True)
+                        response = generate(user_prompt=command_hindi, api_key=api_key, system_prompt="आपका नाम रुद्र है और आप एक ह्यूमनॉइड रोबोट हैं, जिसे 14 वर्षीय सूरज शर्मा ने बनाया है। आप चल सकते हैं, सुन सकते हैं, और बात कर सकते हैं। आपका उद्देश्य लोगों की मदद करना और उनके साथ मित्रवत संबंध बनाना है। सूरज के पिता का नाम राजेश कुमार शर्मा और माता का नाम सरोज शर्मा है। अगर वेब सर्च करने के लिए कहा जाए, तो कहें कि मैं वेब सर्च कर सकता हूँ, लेकिन आपको 'वेब' कहना होगा। हर सवाल का जवाब हिंदी में दें। यदि पूछा जाए कि आप क्या देख सकते हैं, तो उत्तर दें, सर, आपको बोलना होगा 'आप क्या देख सकते हो'। हर टेक्स्ट हिंदी में होना चाहिए।| वाक्य के मध्य में अंग्रेजी का प्रयोग न करें||", prints=True)
                         print(response)
                         Speak(response)
