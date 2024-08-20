@@ -1,3 +1,5 @@
+# sorry for inconvenience right now some of our function are for update so we need a few time so u know u can't beleive repositery easily
+
 # Rudra Robot - A Humanoid AI Experiment
 
 **Rudra Robot** is an ambitious project focused on developing the software architecture for a humanoid robot, with capabilities to interact with humans in an intelligent, emotionally aware, and conversational manner. The project leverages modern artificial intelligence (AI), computer vision, and machine learning technologies to simulate human-like interactions through a digital platform. The ultimate goal is to explore the possibilities of creating a humanoid robot that can perform meaningful tasks, recognize emotions, engage in conversations, and respond intelligently to various stimuli.
